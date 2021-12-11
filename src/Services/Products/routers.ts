@@ -1,0 +1,1 @@
+import productsModel from './schema';

@@ -1,7 +1,7 @@
-import commentsModel from './schema.js';
+import commentsModel from './schema';
 import createHttpError from 'http-errors';
 
-const getAllComments = async (req, res, next) => {
+const getAllComments = async (req: any, res: any, next: any) => {
 	try {
 		const allComment = await commentsModel.find();
 		res.send(allComment);
@@ -10,7 +10,7 @@ const getAllComments = async (req, res, next) => {
 	}
 };
 
-const createComment = async (req, res, next) => {
+const createComment = async (req: any, res: any, next: any) => {
 	try {
 		const newComment = new commentsModel(req.body);
 		const { _id } = await newComment.save();
@@ -21,7 +21,7 @@ const createComment = async (req, res, next) => {
 	}
 };
 
-const getCommentById = async (req, res, next) => {
+const getCommentById = async (req: any, res: any, next: any) => {
 	try {
 		const id = req.params.id;
 		const comment = await commentsModel.findById(id);
@@ -33,7 +33,7 @@ const getCommentById = async (req, res, next) => {
 	}
 };
 
-const updateComment = async (req, res, next) => {
+const updateComment = async (req: any, res: any, next: any) => {
 	try {
 		const id = req.params.id;
 		const updateComment = await commentsModel.findByIdAndUpdate(id, req.body, {
@@ -49,7 +49,7 @@ const updateComment = async (req, res, next) => {
 	}
 };
 
-const deleteComment = async (req, res, next) => {
+const deleteComment = async (req: any, res: any, next: any) => {
 	try {
 		const id = req.params.id;
 		const deleteComment = await commentsModel.findByIdAndDelete(id);
