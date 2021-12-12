@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-
+import  commentSchema from '../Comments/schema';
 const { Schema, model } = mongoose;
 
 const ProductSchema = new mongoose.Schema(
@@ -8,9 +8,8 @@ const ProductSchema = new mongoose.Schema(
 		productImg: { type: String, required: true },
 		productPrice: { type: Number, required: true },
 		productDescription: { type: String, required: true },
-		rating: { type: Number, required: true },
-
-		comments: [{ type: Schema.Types.ObjectId, ref: 'comments' }],
+		rating: { type: Number },
+		comments: { default: [], type: {} },
 	},
 	{
 		timestamps: true,
@@ -18,3 +17,6 @@ const ProductSchema = new mongoose.Schema(
 );
 
 export default model('products', ProductSchema);
+
+
+
