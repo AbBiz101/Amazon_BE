@@ -14,9 +14,9 @@ const commentSchema = new mongoose.Schema(
 			default: 1,
 		},
 	},
-	{ timestamps: true },
+	{
+		timestamps: true,
+	},
 );
 
 export default model('comments', commentSchema);
-
- 

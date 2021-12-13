@@ -44,7 +44,7 @@ const createProducts = async (req: any, res: any, next: any) => {
 		res.status(201).send(_id);
 	} catch (error: any) {
 		next(error);
-		res.send(404).send({ message: error.message });
+		// res.send(404).send({ message: error.message });
 	}
 };
 
@@ -59,7 +59,7 @@ const getProductById = async (req: any, res: any, next: any) => {
 		}
 	} catch (error: any) {
 		next(error);
-		res.status(500).send({ message: error.message });
+		// res.status(500).send({ message: error.message });
 	}
 };
 
@@ -76,7 +76,7 @@ const updateProduct = async (req: any, res: any, next: any) => {
 		}
 	} catch (error: any) {
 		next(error);
-		res.send(500).send({ message: error.message });
+		// res.send(500).send({ message: error.message });
 	}
 };
 
@@ -91,7 +91,7 @@ const deleteProduct = async (req: any, res: any, next: any) => {
 		}
 	} catch (error: any) {
 		next(error);
-		res.send(500).send({ message: error.message });
+		// res.send(500).send({ message: error.message });
 	}
 };
 
@@ -115,12 +115,12 @@ const commentOnAProduct = async (req: any, res: any, next: any) => {
 			);
 		} else {
 			// next(error)
-			// res.send(404).send({ message: error.message });
 			res.status(404).send(`Product with id ${productId} not found!`);
+			// res.status(404).send(`Product with id ${productId} not found!`);
 		}
 	} catch (error: any) {
-		// next(error);
-		res.send(500).send({ message: error.message });
+		next(error);
+		// res.send(500).send({ message: error.message });
 	}
 };
 
@@ -129,13 +129,14 @@ const allCommentsOfAProduct = async (req: any, res: any, next: any) => {
 		const id = req.params.pId;
 		const product = await productsModel.findById(id);
 		if (product) {
-			res.send(200).send(product.comments);
+			console.log(product.comments);
+			res.status(200).send(product.comments);
 		} else {
-			res.status(404).send(`Product with id ${id} not found!`);;
+			res.status(404).send(`Product with id ${id} not found!`);
 		}
 	} catch (error: any) {
 		next(error);
-		res.send(500).send({ message: error.message });
+		//  res.send(500).send({ message: error.message });
 	}
 };
 
@@ -160,7 +161,7 @@ const getCommentOfAProductByID = async (req: any, res: any, next: any) => {
 		}
 	} catch (error: any) {
 		next(error);
-		res.send(500).send({ message: error.message });
+		// res.status(500).send({ message: error.message });
 	}
 };
 
@@ -187,7 +188,7 @@ const editCommentOfAProductByID = async (req: any, res: any, next: any) => {
 		}
 	} catch (error: any) {
 		next(error);
-		res.send(500).send({ message: error.message });
+		// res.status(500).send({ message: error.message });
 	}
 };
 
@@ -220,7 +221,7 @@ const deleteCommentOfAProductByID = async (req: any, res: any, next: any) => {
 		}
 	} catch (error: any) {
 		next(error);
-		res.send(500).send({ message: error.message });
+		// res.send(500).send({ message: error.message });
 	}
 };
 
