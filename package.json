@@ -5,8 +5,7 @@
 	"type": "module",
 	"main": "index.js",
 	"scripts": {
-		"test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest",
-		"watch": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --watchAll",
+		"test": "echo \"Error: no test specified\" && exit 1",
 		"dev": " nodemon -r dotenv/config ./src/server.js",
 		"start": "ts-node src/config/server.ts"
 	},
