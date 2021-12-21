@@ -1,54 +1,31 @@
-import commentsModel from '../Comments/schema';
+import commentsModel from '../Comments/schema.js';
 import createHttpError from 'http-errors';
-import productsModel from './schema';
+import productsModel from './schema.js';
 //import q2m from 'query-to-mongo';
-
-type Comment = {
-	_id: String;
-	username: String;
-	comments: String;
-	rating: Number;
-	createdAt: String;
-	updatedAt: String;
-	__v: Number;
-};
-
-type Product = {
-	_id: String;
-	productName: String;
-	productImg: String;
-	productPrice: Number;
-	productDescription: String;
-	rating: Number;
-	comments: Comment;
-	createdAt: String;
-	updatedAt: String;
-	__v: Number;
-};
 
 /* ******************** Product endpoints *************************** */
 
-const getAllProducts = async (req: any, res: any, next: any) => {
+const getAllProducts = async (req, res, next) => {
 	try {
 		const allProducts = await productsModel.find();
 		res.status(200).send(allProducts);
-	} catch (error: any) {
+	} catch (error) {
 		res.send(500).send({ message: error.message });
 	}
 };
 
-const createProducts = async (req: any, res: any, next: any) => {
+const createProducts = async (req, res, next) => {
 	try {
 		const newProducts = new productsModel(req.body);
 		const { _id } = await newProducts.save();
 		res.status(201).send(_id);
-	} catch (error: any) {
+	} catch (error) {
 		next(error);
 		// res.send(404).send({ message: error.message });
 	}
 };
 
-const getProductById = async (req: any, res: any, next: any) => {
+const getProductById = async (req, res, next) => {
 	try {
 		const id = req.params.id;
 		const product = await productsModel.findById(id);
@@ -57,13 +34,13 @@ const getProductById = async (req: any, res: any, next: any) => {
 		} else {
 			res.status(404).send('No product found with this id.');
 		}
-	} catch (error: any) {
+	} catch (error) {
 		next(error);
 		// res.status(500).send({ message: error.message });
 	}
 };
 
-const updateProduct = async (req: any, res: any, next: any) => {
+const updateProduct = async (req, res, next) => {
 	try {
 		const id = req.params.id;
 		const updateProduct = await productsModel.findByIdAndUpdate(id, req.body, {
@@ -74,13 +51,13 @@ const updateProduct = async (req: any, res: any, next: any) => {
 		} else {
 			res.status(404).send();
 		}
-	} catch (error: any) {
+	} catch (error) {
 		next(error);
 		// res.send(500).send({ message: error.message });
 	}
 };
 
-const deleteProduct = async (req: any, res: any, next: any) => {
+const deleteProduct = async (req, res, next) => {
 	try {
 		const id = req.params.id;
 		const product = await productsModel.findByIdAndDelete(id);
@@ -89,7 +66,7 @@ const deleteProduct = async (req: any, res: any, next: any) => {
 		} else {
 			res.status(404).send();
 		}
-	} catch (error: any) {
+	} catch (error) {
 		next(error);
 		// res.send(500).send({ message: error.message });
 	}
@@ -97,7 +74,7 @@ const deleteProduct = async (req: any, res: any, next: any) => {
 
 /* *********************** comment endpoints ************************ */
 
-const commentOnAProduct = async (req: any, res: any, next: any) => {
+const commentOnAProduct = async (req, res, next) => {
 	console.log(req.params.pId, req.body);
 
 	try {
@@ -118,13 +95,13 @@ const commentOnAProduct = async (req: any, res: any, next: any) => {
 			res.status(404).send(`Product with id ${productId} not found!`);
 			// res.status(404).send(`Product with id ${productId} not found!`);
 		}
-	} catch (error: any) {
+	} catch (error) {
 		next(error);
 		// res.send(500).send({ message: error.message });
 	}
 };
 
-const allCommentsOfAProduct = async (req: any, res: any, next: any) => {
+const allCommentsOfAProduct = async (req, res, next) => {
 	try {
 		const id = req.params.pId;
 		const product = await productsModel.findById(id);
@@ -134,13 +111,13 @@ const allCommentsOfAProduct = async (req: any, res: any, next: any) => {
 		} else {
 			res.status(404).send(`Product with id ${id} not found!`);
 		}
-	} catch (error: any) {
+	} catch (error) {
 		next(error);
 		//  res.send(500).send({ message: error.message });
 	}
 };
 
-const getCommentOfAProductByID = async (req: any, res: any, next: any) => {
+const getCommentOfAProductByID = async (req, res, next) => {
 	try {
 		const productId = req.params.pId;
 		const commentId = req.params.commentID;
@@ -159,19 +136,19 @@ const getCommentOfAProductByID = async (req: any, res: any, next: any) => {
 				.status(404)
 				.send({ message: `Product with ${productId} is not found!` });
 		}
-	} catch (error: any) {
+	} catch (error) {
 		next(error);
 		// res.status(500).send({ message: error.message });
 	}
 };
 
-const editCommentOfAProductByID = async (req: any, res: any, next: any) => {
+const editCommentOfAProductByID = async (req, res, next) => {
 	try {
 		const productId = req.params.pId;
 		const commentId = req.params.commentID;
 		const product = await productsModel.findById(productId);
 		if (product) {
-			const commentIndex: number = product.comments
+			const commentIndex = product.comments
 				.findByIndex
 				// comment => comment._id.toString() === commentId,
 				();
@@ -186,13 +163,13 @@ const editCommentOfAProductByID = async (req: any, res: any, next: any) => {
 				.status(404)
 				.send({ message: `Product with ${productId} is not found!` });
 		}
-	} catch (error: any) {
+	} catch (error) {
 		next(error);
 		// res.status(500).send({ message: error.message });
 	}
 };
 
-const deleteCommentOfAProductByID = async (req: any, res: any, next: any) => {
+const deleteCommentOfAProductByID = async (req, res, next) => {
 	try {
 		const productId = req.params.pId;
 		const commentId = req.params.commentID;
@@ -219,7 +196,7 @@ const deleteCommentOfAProductByID = async (req: any, res: any, next: any) => {
 				.status(404)
 				.send({ message: `Product with ${productId} is not found!` });
 		}
-	} catch (error: any) {
+	} catch (error) {
 		next(error);
 		// res.send(500).send({ message: error.message });
 	}

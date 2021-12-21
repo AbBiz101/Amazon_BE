@@ -1,5 +1,5 @@
 import express from 'express';
-import commentEndPoint from './routers';
+import commentEndPoint from './routers.js';
 
 const {
 	getAllComments,

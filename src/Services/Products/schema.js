@@ -8,6 +8,7 @@ const ProductSchema = new mongoose.Schema(
 		productImg: { type: String, required: true },
 		productPrice: { type: Number, required: true },
 		productDescription: { type: String, required: true },
+		productCategory: { type: String, required: true },
 		rating: { type: Number },
 		comments: { default: [], type: {} },
 	},
@@ -15,6 +16,5 @@ const ProductSchema = new mongoose.Schema(
 		timestamps: true,
 	},
 );
-
 
 export default model('products', ProductSchema);

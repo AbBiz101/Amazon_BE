@@ -15,10 +15,8 @@ app.get('/test', (req, res) => {
 	res.send({ message: 'Test successful' });
 });
 
-
 /* *************************** Endpoints  ********************************************* */
 app.use('/products', productsRouter);
-
 
 /* *************************** Error middleware  ************************************* */
 app.use(badRequestHandler);
@@ -26,4 +24,4 @@ app.use(unAuthorizedHandler);
 app.use(notFoundHandler);
 app.use(genericErrorHandler);
 
-export { app };
+export default app;

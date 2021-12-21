@@ -15,7 +15,7 @@ describe('Testing Jest config', () => {
 describe('Testing the app Endpoints', () => {
 	beforeAll((done) => {
 		console.log('This gets run before all tests in this suite');
-		mongoose.connect(process.env.MONGO_URL_Test!).then(() => {
+		mongoose.connect(process.env.MONGO_URL_Test).then(() => {
 			console.log('Connected to the test database');
 			done();
 		});
@@ -49,7 +49,7 @@ describe('Testing the app Endpoints', () => {
 		__v: 0,
 	};
 
-	let _id: string;
+	let _id;
 	const wrongId = '999999999999999999999999';
 
 	/* ************************************************ product endpoints ************************************************* */
