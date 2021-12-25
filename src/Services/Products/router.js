@@ -1,14 +1,25 @@
 import comments from '../Comments/schema.js';
 import createHttpError from 'http-errors';
 import products from './schema.js';
-//import q2m from 'query-to-mongo';
+import q2m from 'query-to-mongo';
 
 /* ******************** Product endpoints *************************** */
 
 const getAllProducts = async (req, res, next) => {
 	try {
-		const allProducts = await products.find();
-		res.status(200).send(allProducts);
+		const mongoQuery = q2m(req.query);
+		const total = await products.countDocuments(mongoQuery.criteria);
+		const allProducts = await products
+			.find(mongoQuery.criteria)
+			.limit(mongoQuery.options.limit)
+			.skip(mongoQuery.options.skip)
+			.sort(mongoQuery.options.sort);
+		res.send({
+			links: mongoQuery.links('/product', total),
+			pageTotal: Math.ceil(total / mongoQuery.options.limit),
+			total,
+			allProducts,
+		});
 	} catch (error) {
 		res.status(500).send();
 		next(error);

@@ -1,5 +1,6 @@
 import UserModel from './schema.js';
 import createHttpError from 'http-errors';
+import q2m from 'query-to-mongo';
 
 const createUser = async (req, res, next) => {
 	try {
@@ -85,8 +86,18 @@ const deleteUser = async (req, res, next) => {
 /**************************************** ADMIN *************************************************/
 const getAllUserAdmin = async (req, res, next) => {
 	try {
-		const users = await UserModel.find();
-		res.status(200).send(users);
+		const mongoQuery = q2m(req.query);
+		const total = await products.countDocuments(mongoQuery.criteria);
+		const users = await UserModel.find(mongoQuery.criteria)
+			.limit(mongoQuery.options.limit)
+			.skip(mongoQuery.options.skip)
+			.sort(mongoQuery.options.sort);
+		res.send({
+			links: mongoQuery.links('/product', total),
+			pageTotal: Math.ceil(total / mongoQuery.options.limit),
+			total,
+			users,
+		});
 	} catch (error) {
 		next(error);
 	}
