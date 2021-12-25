@@ -1,5 +1,5 @@
 import express from 'express';
-import productEndPoints from './routers.js';
+import productEndPoints from './router.js';
 
 const {
 	updateProduct,

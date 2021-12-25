@@ -7,44 +7,45 @@ import products from './schema.js';
 
 const getAllProducts = async (req, res, next) => {
 	try {
-		const allProducts = await productsModel.find();
+		const allProducts = await products.find();
 		res.status(200).send(allProducts);
 	} catch (error) {
-		res.send(500).send({ message: error.message });
+		res.status(500).send();
+		next(error);
 	}
 };
 
-
 const createProducts = async (req, res, next) => {
 	try {
-		const newProducts = new productsModel(req.body);
+		const newProducts = new products(req.body);
 		const { _id } = await newProducts.save();
 		res.status(201).send(_id);
 	} catch (error) {
+		console.log(error);
+		res.status(500).send();
 		next(error);
-		// res.send(404).send({ message: error.message });
 	}
 };
 
 const getProductById = async (req, res, next) => {
 	try {
 		const id = req.params.productId;
-		const product = await productsModel.findById(id);
+		const product = await products.findById(id);
 		if (product) {
 			res.status(200).send(product);
 		} else {
 			res.status(404).send('No product found with this id.');
 		}
 	} catch (error) {
+		res.status(500).send();
 		next(error);
-		// res.status(500).send({ message: error.message });
 	}
 };
 
 const updateProduct = async (req, res, next) => {
 	try {
 		const id = req.params.productId;
-		const updateProduct = await productsModel.findByIdAndUpdate(id, req.body, {
+		const updateProduct = await products.findByIdAndUpdate(id, req.body, {
 			new: true,
 		});
 		if (updateProduct) {
@@ -53,23 +54,23 @@ const updateProduct = async (req, res, next) => {
 			res.status(404).send();
 		}
 	} catch (error) {
+		res.send(500).send();
 		next(error);
-		// res.send(500).send({ message: error.message });
 	}
 };
 
 const deleteProduct = async (req, res, next) => {
 	try {
 		const id = req.params.productId;
-		const product = await productsModel.findByIdAndDelete(id);
+		const product = await products.findByIdAndDelete(id);
 		if (product) {
 			res.status(204).send();
 		} else {
 			res.status(404).send();
 		}
 	} catch (error) {
+		res.send(500).send();
 		next(error);
-		// res.send(500).send({ message: error.message });
 	}
 };
 
@@ -94,8 +95,8 @@ const commentOnAProduct = async (req, res, next) => {
 			res.status(204).send();
 		}
 	} catch (error) {
-		console.log(error);
-		res.send(500).send({ message: error.message });
+		res.send(500).send();
+		next(error);
 	}
 };
 
@@ -110,101 +111,103 @@ const allCommentsOfAProduct = async (req, res, next) => {
 			res.status(404).send(`Product with id ${id} not found!`);
 		}
 	} catch (error) {
+		res.send(500).send();
 		next(error);
-		//  res.send(500).send({ message: error.message });
 	}
 };
 
 const getCommentOfAProductByID = async (req, res, next) => {
-	console.log(32)
 	try {
-		const productId = req.params.productId;
-		const commentId = req.params.commentID;
 		const product = await products.findById(req.params.productId);
-		
-		console.log(productId, commentId, product);
 		if (product) {
 			const commentIndex = product.productComment.findIndex(
 				(comment) => comment._id.toString() === req.params.commentID,
 			);
-			console.log(product, commentIndex);
 			if (commentIndex === -1) {
-				res.status(404)
+				res.status(404).send({
+					message: `Comment with ${req.params.commentID} is not found!`,
+				});
 			} else {
-				res.send(commentIndex);
-				// res
-				// 	.status(404)
-				// 	.send({ message: `Comment with ${commentId} is not found!` });
+				const obj = product.productComment[commentIndex];
+				console.log(product.productComment[commentIndex]);
+				res.status(204).send(obj);
 			}
 		} else {
-			// res.status(404)
-console.log("error");
-				// .send({ message: `Product with ${productId} is not found!` });
+			res.status(404).send({
+				message: `Product with ${req.params.productId} is not found!`,
+			});
 		}
 	} catch (error) {
-		console.log(error)
-		// next(error);
-		// res.status(500).send({ message: error.message });
+		console.log(error);
+		res.status(500);
+		next(error);
 	}
 };
 
 const editCommentOfAProductByID = async (req, res, next) => {
 	try {
-		const productId = req.params.productId;
-		const commentId = req.params.commentID;
-		const product = await productsModel.findById(productId);
+		const product = await products.findById(req.params.productId);
 		if (product) {
-			const commentIndex = product.comments
-				.findByIndex
-				// comment => comment._id.toString() === commentId,
-				();
-			if (commentIndex) {
+			const commentIndex = product.productComment.findIndex(
+				(comment) => comment._id.toString() === req.params.commentID,
+			);
+			if (commentIndex === -1) {
+				res.status(404).send({
+					message: `Comment with ${req.params.commentID} is not found!`,
+				});
 			} else {
-				res
-					.status(404)
-					.send({ message: `Comment with ${commentId} is not found!` });
+				console.log(product.productComment[commentIndex], req.body);
+				product.productComment[commentIndex] = {
+					...product.productComment[commentIndex],
+					...req.body,
+				};
+				// await product.save();
+				res.status(204).send();
 			}
 		} else {
-			res
-				.status(404)
-				.send({ message: `Product with ${productId} is not found!` });
+			res.status(404).send({
+				message: `Product with ${req.params.productId} is not found!`,
+			});
 		}
 	} catch (error) {
+		console.log(error);
+		res.status(500);
 		next(error);
-		// res.status(500).send({ message: error.message });
 	}
 };
 
 const deleteCommentOfAProductByID = async (req, res, next) => {
 	try {
-		const productId = req.params.productId;
-		const commentId = req.params.commentID;
-		const product = await productsModel.findById(productId);
+		const product = await products.findById(req.params.productId);
 		if (product) {
-			const comment = product.comments.findById(commentId);
-			if (comment) {
-				await productsModel.findByIdAndDelete(
-					productId,
+			const commentIndex = product.productComment.findIndex(
+				(comment) => comment._id.toString() === req.params.commentID,
+			);
+			if (commentIndex === -1) {
+				res.status(404).send({
+					message: `comment with ${req.params.commentID} is not found!`,
+				});
+			} else {
+				await products.findByIdAndUpdate(
+					req.params.productId,
 					{
 						$pull: {
-							comments: { _id: commentId },
+							productComment: { _id: req.params.commentID },
 						},
 					},
-					//{ new: true },
+					{ new: true },
 				);
-			} else {
-				res
-					.status(404)
-					.send({ message: `Comment with ${commentId} is not found!` });
+				res.status(204).send();
 			}
 		} else {
-			res
-				.status(404)
-				.send({ message: `Product with ${productId} is not found!` });
+			res.status(404).send({
+				message: `Product with ${req.params.productId} is not found!`,
+			});
 		}
 	} catch (error) {
+		console.log(error);
+		res.status(500);
 		next(error);
-		// res.send(500).send({ message: error.message });
 	}
 };
 

@@ -1,13 +1,10 @@
 import cors from 'cors';
+import express from 'express';
 import mongoose from 'mongoose';
 import Endpoints from 'express-list-endpoints';
-import express from 'express';
-import {
-	usersRouter,
-	commentsRouter,
-	productsRouter,
-} from './Services/index.js';
 import { errorHandler } from './errorHandler.js';
+import usersRouter from './Services/User/index.js';
+import productsRouter from './Services/Products/index.js';
 
 const app = express();
 app.use(express.json());
@@ -25,13 +22,11 @@ const corsOpts = {
 	},
 };
 
-//app.use(cors(corsOpts));
-app.use(cors());
+app.use(cors(corsOpts));
 
 /* *************************** Endpoints  ********************************************* */
 app.use('/user', usersRouter);
 app.use('/product', productsRouter);
-// app.use('/comment', commentsRouter);
 
 /* *************************** Error middleware  ************************************* */
 app.use(errorHandler);
