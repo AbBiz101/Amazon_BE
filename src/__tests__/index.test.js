@@ -1,7 +1,7 @@
 import supertest from 'supertest';
 import mongoose from 'mongoose';
-import { app } from '../app';
 import dotenv from 'dotenv';
+import { app } from '../app';
 
 dotenv.config();
 const request = supertest(app);

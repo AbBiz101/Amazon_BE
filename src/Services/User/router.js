@@ -119,7 +119,7 @@ const deleteUserAdmin = async (req, res, next) => {
 	}
 };
 
-const endpoints = {
+const userEndpoints = {
 	login,
 	getUser,
 	editUser,
@@ -133,4 +133,4 @@ const endpoints = {
 	deleteUserAdmin,
 };
 
-export default endpoints;
+export default userEndpoints;

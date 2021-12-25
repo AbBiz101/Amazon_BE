@@ -5,7 +5,7 @@ const { Schema, model } = mongoose;
 
 export const UserSchema = new Schema(
 	{
-		comments: [{ type: Schema.Types.ObjectId, ref: 'comments' }],
+		// comments: [{ type: Schema.Types.ObjectId, ref: 'comments' }],
 		cart: [{ type: Schema.Types.ObjectId, ref: 'Product' }],
 		email: { type: String, required: true, unique: true },
 		firstName: { type: String, required: true },

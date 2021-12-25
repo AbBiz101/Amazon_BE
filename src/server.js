@@ -2,8 +2,11 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import Endpoints from 'express-list-endpoints';
 import express from 'express';
-import productsRouter from './Services/Products/index.js';
-import usersRouter from './Services/User/index.js';
+import {
+	usersRouter,
+	commentsRouter,
+	productsRouter,
+} from './Services/index.js';
 import { errorHandler } from './errorHandler.js';
 
 const app = express();
@@ -26,7 +29,8 @@ app.use(cors(corsOpts));
 
 /* *************************** Endpoints  ********************************************* */
 app.use('/user', usersRouter);
-app.use('/products', productsRouter);
+app.use('/product', productsRouter);
+app.use('/comment', commentsRouter);
 
 /* *************************** Error middleware  ************************************* */
 app.use(errorHandler);

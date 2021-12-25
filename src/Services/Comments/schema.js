@@ -4,11 +4,11 @@ const { Schema, model } = mongoose;
 
 const commentSchema = new mongoose.Schema(
 	{
-		username: { type: String, required: true },
-		comments: { type: String, required: true },
+		user: { type: Schema.Types.ObjectId, ref: 'User' },
+		product: { type: Schema.Types.ObjectId, ref: 'products' },
+		comments: { type: String },
 		rating: {
 			type: Number,
-			required: true,
 			min: [1, 'Minimum rate is 1'],
 			max: [5, 'Maximum rate is 5'],
 			default: 1,

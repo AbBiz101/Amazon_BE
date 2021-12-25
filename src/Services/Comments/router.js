@@ -63,7 +63,7 @@ const deleteComment = async (req, res, next) => {
 	}
 };
 
-const commentEndPoint = {
+const commentEndPoints = {
 	getAllComments,
 	createComment,
 	getCommentById,
@@ -71,4 +71,4 @@ const commentEndPoint = {
 	deleteComment,
 };
 
-export default commentEndPoint;
+export default commentEndPoints;
