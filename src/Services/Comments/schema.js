@@ -4,8 +4,7 @@ const { Schema, model } = mongoose;
 
 const commentSchema = new mongoose.Schema(
 	{
-		user: { type: Schema.Types.ObjectId, ref: 'User' },
-		product: { type: Schema.Types.ObjectId, ref: 'products' },
+		user: { type: Schema.Types.ObjectId, ref: 'user' },
 		comments: { type: String, required: true },
 		rating: {
 			type: Number,

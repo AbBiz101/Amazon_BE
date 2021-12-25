@@ -25,7 +25,8 @@ const corsOpts = {
 	},
 };
 
-app.use(cors(corsOpts));
+//app.use(cors(corsOpts));
+app.use(cors());
 
 /* *************************** Endpoints  ********************************************* */
 app.use('/user', usersRouter);

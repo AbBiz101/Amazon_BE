@@ -1,6 +1,6 @@
-import commentsModel from '../Comments/schema.js';
+import comments from '../Comments/schema.js';
 import createHttpError from 'http-errors';
-import productsModel from './schema.js';
+import products from './schema.js';
 //import q2m from 'query-to-mongo';
 
 /* ******************** Product endpoints *************************** */
@@ -13,6 +13,7 @@ const getAllProducts = async (req, res, next) => {
 		res.send(500).send({ message: error.message });
 	}
 };
+
 
 const createProducts = async (req, res, next) => {
 	try {
@@ -75,39 +76,36 @@ const deleteProduct = async (req, res, next) => {
 /* *********************** comment endpoints ************************ */
 
 const commentOnAProduct = async (req, res, next) => {
-	console.log(req.params.productId, req.body);
-
 	try {
-		const productId = req.params.productId;
-		const product = await productsModel.findById(productId);
-		if (product) {
-			await productsModel.findByIdAndUpdate(
-				productId,
+		const id = req.params.productId;
+		const product = await products.findById(id);
+		if (!product) {
+			res.status(404).send({ message: `product with ${id} is not found!` });
+		} else {
+			await products.findByIdAndUpdate(
+				req.params.productId,
 				{
 					$push: {
-						comments: req.body,
+						productComment: req.body,
 					},
 				},
 				{ new: true },
 			);
-		} else {
-			// next(error)
-			res.status(404).send(`Product with id ${productId} not found!`);
-			// res.status(404).send(`Product with id ${productId} not found!`);
+			res.status(204).send();
 		}
 	} catch (error) {
-		next(error);
-		// res.send(500).send({ message: error.message });
+		console.log(error);
+		res.send(500).send({ message: error.message });
 	}
 };
 
 const allCommentsOfAProduct = async (req, res, next) => {
 	try {
 		const id = req.params.productId;
-		const product = await productsModel.findById(id);
+		const product = await products.findById(id);
 		if (product) {
-			console.log(product.comments);
-			res.status(200).send(product.comments);
+			console.log(product.productComment);
+			res.status(200).send(product.productComment);
 		} else {
 			res.status(404).send(`Product with id ${id} not found!`);
 		}
@@ -118,26 +116,34 @@ const allCommentsOfAProduct = async (req, res, next) => {
 };
 
 const getCommentOfAProductByID = async (req, res, next) => {
+	console.log(32)
 	try {
 		const productId = req.params.productId;
 		const commentId = req.params.commentID;
-		const product = await productsModel.findById(productId);
+		const product = await products.findById(req.params.productId);
+		
+		console.log(productId, commentId, product);
 		if (product) {
-			const comment = await commentsModel.findById(commentId);
-			if (comment) {
-				res.send(comment);
+			const commentIndex = product.productComment.findIndex(
+				(comment) => comment._id.toString() === req.params.commentID,
+			);
+			console.log(product, commentIndex);
+			if (commentIndex === -1) {
+				res.status(404)
 			} else {
-				res
-					.status(404)
-					.send({ message: `Comment with ${commentId} is not found!` });
+				res.send(commentIndex);
+				// res
+				// 	.status(404)
+				// 	.send({ message: `Comment with ${commentId} is not found!` });
 			}
 		} else {
-			res
-				.status(404)
-				.send({ message: `Product with ${productId} is not found!` });
+			// res.status(404)
+console.log("error");
+				// .send({ message: `Product with ${productId} is not found!` });
 		}
 	} catch (error) {
-		next(error);
+		console.log(error)
+		// next(error);
 		// res.status(500).send({ message: error.message });
 	}
 };

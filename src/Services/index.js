@@ -111,7 +111,7 @@ productsRouter
     .delete(deleteProduct);
     
 productsRouter
-	.route('/:userId/:productId/comment')
+	.route('/:productId/comment')
 	.put(commentOnAProduct)
 	.get(allCommentsOfAProduct);
     
