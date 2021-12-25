@@ -30,7 +30,7 @@ app.use(cors(corsOpts));
 /* *************************** Endpoints  ********************************************* */
 app.use('/user', usersRouter);
 app.use('/product', productsRouter);
-app.use('/comment', commentsRouter);
+// app.use('/comment', commentsRouter);
 
 /* *************************** Error middleware  ************************************* */
 app.use(errorHandler);

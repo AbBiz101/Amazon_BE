@@ -12,6 +12,7 @@ const getAllComments = async (req, res, next) => {
 
 const createComment = async (req, res, next) => {
 	try {
+		// const id= req.params.pId
 		const newComment = new commentsModel(req.body);
 		const { _id } = await newComment.save();
 		console.log(newComment);

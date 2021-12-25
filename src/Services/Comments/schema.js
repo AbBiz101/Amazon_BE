@@ -6,7 +6,7 @@ const commentSchema = new mongoose.Schema(
 	{
 		user: { type: Schema.Types.ObjectId, ref: 'User' },
 		product: { type: Schema.Types.ObjectId, ref: 'products' },
-		comments: { type: String },
+		comments: { type: String, required: true },
 		rating: {
 			type: Number,
 			min: [1, 'Minimum rate is 1'],

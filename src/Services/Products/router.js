@@ -27,7 +27,7 @@ const createProducts = async (req, res, next) => {
 
 const getProductById = async (req, res, next) => {
 	try {
-		const id = req.params.id;
+		const id = req.params.productId;
 		const product = await productsModel.findById(id);
 		if (product) {
 			res.status(200).send(product);
@@ -42,7 +42,7 @@ const getProductById = async (req, res, next) => {
 
 const updateProduct = async (req, res, next) => {
 	try {
-		const id = req.params.id;
+		const id = req.params.productId;
 		const updateProduct = await productsModel.findByIdAndUpdate(id, req.body, {
 			new: true,
 		});
@@ -59,7 +59,7 @@ const updateProduct = async (req, res, next) => {
 
 const deleteProduct = async (req, res, next) => {
 	try {
-		const id = req.params.id;
+		const id = req.params.productId;
 		const product = await productsModel.findByIdAndDelete(id);
 		if (product) {
 			res.status(204).send();
@@ -75,10 +75,10 @@ const deleteProduct = async (req, res, next) => {
 /* *********************** comment endpoints ************************ */
 
 const commentOnAProduct = async (req, res, next) => {
-	console.log(req.params.pId, req.body);
+	console.log(req.params.productId, req.body);
 
 	try {
-		const productId = req.params.pId;
+		const productId = req.params.productId;
 		const product = await productsModel.findById(productId);
 		if (product) {
 			await productsModel.findByIdAndUpdate(
@@ -103,7 +103,7 @@ const commentOnAProduct = async (req, res, next) => {
 
 const allCommentsOfAProduct = async (req, res, next) => {
 	try {
-		const id = req.params.pId;
+		const id = req.params.productId;
 		const product = await productsModel.findById(id);
 		if (product) {
 			console.log(product.comments);
@@ -119,7 +119,7 @@ const allCommentsOfAProduct = async (req, res, next) => {
 
 const getCommentOfAProductByID = async (req, res, next) => {
 	try {
-		const productId = req.params.pId;
+		const productId = req.params.productId;
 		const commentId = req.params.commentID;
 		const product = await productsModel.findById(productId);
 		if (product) {
@@ -144,7 +144,7 @@ const getCommentOfAProductByID = async (req, res, next) => {
 
 const editCommentOfAProductByID = async (req, res, next) => {
 	try {
-		const productId = req.params.pId;
+		const productId = req.params.productId;
 		const commentId = req.params.commentID;
 		const product = await productsModel.findById(productId);
 		if (product) {
@@ -171,7 +171,7 @@ const editCommentOfAProductByID = async (req, res, next) => {
 
 const deleteCommentOfAProductByID = async (req, res, next) => {
 	try {
-		const productId = req.params.pId;
+		const productId = req.params.productId;
 		const commentId = req.params.commentID;
 		const product = await productsModel.findById(productId);
 		if (product) {

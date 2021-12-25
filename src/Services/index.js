@@ -49,13 +49,13 @@ const {
 } = commentEndPoints;
 
 /*************************************************************************** COMMENT ENDPOINTS **********************************************************************/
-commentsRouter.route('/comment').post(createComment).get(getAllComments);
+// commentsRouter.route('/:proId/comment').post(createComment).get(getAllComments);
 
-commentsRouter
-	.route('/comment/:id')
-	.put(updateComment)
-	.get(getCommentById)
-	.delete(deleteComment);
+// commentsRouter
+// 	.route('/comment/:id')
+// 	.put(updateComment)
+// 	.get(getCommentById)
+// 	.delete(deleteComment);
 /*************************************************************************** COMMENT ENDPOINTS **********************************************************************/
 
 
@@ -105,18 +105,18 @@ usersRouter
 productsRouter.route('/').post(createProducts).get(getAllProducts);
 
 productsRouter
-	.route('/:id')
+	.route('/:productId')
 	.put(updateProduct)
 	.get(getProductById)
     .delete(deleteProduct);
     
 productsRouter
-	.route('/:pId/comment')
+	.route('/:userId/:productId/comment')
 	.put(commentOnAProduct)
-    .get(allCommentsOfAProduct);
+	.get(allCommentsOfAProduct);
     
 productsRouter
-	.route('/:pId/comment/commentID')
+	.route('/:productId/comment/commentID')
 	.get(getCommentOfAProductByID)
 	.put(editCommentOfAProductByID)
 	.delete(deleteCommentOfAProductByID);
