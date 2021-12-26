@@ -19,13 +19,13 @@ const productsRouter = express.Router();
 productsRouter.route('/').post(createProducts).get(getAllProducts);
 
 productsRouter
-	.route('/:id')
+	.route('/:productId')
 	.put(updateProduct)
 	.get(getProductById)
 	.delete(deleteProduct);
 
 productsRouter
-	.route('/:pId/comment')
+	.route('/:productId/comment')
 	.put(commentOnAProduct)
 	.get(allCommentsOfAProduct);
 

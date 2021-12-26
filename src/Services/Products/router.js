@@ -14,6 +14,8 @@ const getAllProducts = async (req, res, next) => {
 			.limit(mongoQuery.options.limit)
 			.skip(mongoQuery.options.skip)
 			.sort(mongoQuery.options.sort);
+	console.log(21211);
+		
 		res.send({
 			links: mongoQuery.links('/product', total),
 			pageTotal: Math.ceil(total / mongoQuery.options.limit),
@@ -42,10 +44,11 @@ const getProductById = async (req, res, next) => {
 	try {
 		const id = req.params.productId;
 		const product = await products.findById(id);
+		console.log(product);
 		if (product) {
 			res.status(200).send(product);
 		} else {
-			res.status(404).send('No product found with this id.');
+			res.status(404).send(`No product found with this id-${id}.`);
 		}
 	} catch (error) {
 		res.status(500).send();

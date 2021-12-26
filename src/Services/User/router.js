@@ -93,7 +93,7 @@ const getAllUserAdmin = async (req, res, next) => {
 			.skip(mongoQuery.options.skip)
 			.sort(mongoQuery.options.sort);
 		res.send({
-			links: mongoQuery.links('/product', total),
+			links: mongoQuery.links('/user', total),
 			pageTotal: Math.ceil(total / mongoQuery.options.limit),
 			total,
 			users,
