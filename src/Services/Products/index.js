@@ -7,11 +7,6 @@ const {
 	getAllProducts,
 	createProducts,
 	getProductById,
-	commentOnAProduct,
-	allCommentsOfAProduct,
-	getCommentOfAProductByID,
-	editCommentOfAProductByID,
-	deleteCommentOfAProductByID,
 } = productEndPoints;
 
 const productsRouter = express.Router();
@@ -23,16 +18,4 @@ productsRouter
 	.put(updateProduct)
 	.get(getProductById)
 	.delete(deleteProduct);
-
-productsRouter
-	.route('/:productId/comment')
-	.put(commentOnAProduct)
-	.get(allCommentsOfAProduct);
-
-productsRouter
-	.route('/:productId/comment/:commentID')
-	.get(getCommentOfAProductByID)
-	.put(editCommentOfAProductByID)
-	.delete(deleteCommentOfAProductByID);
-
 export default productsRouter;

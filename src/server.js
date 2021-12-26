@@ -5,7 +5,7 @@ import Endpoints from 'express-list-endpoints';
 import { errorHandler } from './errorHandler.js';
 import usersRouter from './Services/User/index.js';
 import productsRouter from './Services/Products/index.js';
-
+import commentRouter from './Services/Comments/index.js';
 const app = express();
 app.use(express.json());
 
@@ -27,6 +27,7 @@ app.use(cors(corsOpts));
 /* *************************** Endpoints  ********************************************* */
 app.use('/user', usersRouter);
 app.use('/product', productsRouter);
+app.use('/product', commentRouter);
 
 /* *************************** Error middleware  ************************************* */
 app.use(errorHandler);
