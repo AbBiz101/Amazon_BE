@@ -1,9 +1,23 @@
+import { CloudinaryStorage } from 'multer-storage-cloudinary';
+import { v2 as cloudinary } from 'cloudinary';
 import comments from '../Comments/schema.js';
 import createHttpError from 'http-errors';
 import products from './schema.js';
 import q2m from 'query-to-mongo';
 
 /* ******************** Product endpoints *************************** */
+const createImg = async (req, res, next) => {
+	try {
+		let imageUrl = req.file.path;
+		if (imageUrl) {
+			res.send(imageUrl);
+		} else {
+			console.log('image uploading failed');
+		}
+	} catch (error) {
+		next(error);
+	}
+};
 
 const getAllProducts = async (req, res, next) => {
 	try {
@@ -89,6 +103,7 @@ const deleteProduct = async (req, res, next) => {
 };
 
 const productEndPoints = {
+	createImg,
 	updateProduct,
 	deleteProduct,
 	getAllProducts,
