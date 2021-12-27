@@ -6,16 +6,17 @@ import products from './schema.js';
 import q2m from 'query-to-mongo';
 
 /* ******************** Product endpoints *************************** */
+let imageURL;
 const createImg = async (req, res, next) => {
 	try {
-		let imageUrl = req.file.path;
+		imageURL = req.file.path;
 		if (imageUrl) {
 			res.send(imageUrl);
 		} else {
 			console.log('image uploading failed');
 		}
 	} catch (error) {
-		next(error);
+		console.log(error);
 	}
 };
 
@@ -45,6 +46,7 @@ const getAllProducts = async (req, res, next) => {
 const createProducts = async (req, res, next) => {
 	try {
 		const newProducts = new products(req.body);
+		newProducts.productImg = req.file.path;
 		const { _id } = await newProducts.save();
 		res.status(201).send(_id);
 	} catch (error) {

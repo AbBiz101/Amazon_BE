@@ -25,7 +25,13 @@ productsRouter
 	.route('/Image')
 	.post(multer({ storage: cloudinaryStorage }).single('product'), createImg);
 
-productsRouter.route('/').post(createProducts).get(getAllProducts);
+productsRouter
+	.route('/')
+	.post(
+		multer({ storage: cloudinaryStorage }).single('product'),
+		createProducts,
+	)
+	.get(getAllProducts);
 
 productsRouter
 	.route('/:productId')
