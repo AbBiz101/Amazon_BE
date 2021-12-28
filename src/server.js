@@ -4,9 +4,10 @@ import mongoose from 'mongoose';
 import Endpoints from 'express-list-endpoints';
 import { errorHandler } from './errorHandler.js';
 import usersRouter from './Services/User/index.js';
-import productsRouter from './Services/Products/index.js';
 import commentRouter from './Services/Comments/index.js';
+import productsRouter from './Services/Products/index.js';
 import cartsRouter from './Services/ShoppingCart/router.js';
+
 const app = express();
 app.use(express.json());
 
