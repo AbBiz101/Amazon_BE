@@ -1,7 +1,7 @@
 import UserModel from './schema.js';
 import createHttpError from 'http-errors';
 import q2m from 'query-to-mongo';
-
+import { JWTAuthenticatorForLogin } from '../../Authentication/authenticator.js';
 const createUser = async (req, res, next) => {
 	try {
 		const newUser = await new UserModel(req.body).save();
@@ -22,11 +22,12 @@ const login = async (req, res, next) => {
 			const { accessToken, refreshToken } = await JWTAuthenticatorForLogin(
 				user,
 			);
-			res.send({ refreshToken, accessToken });
+			res.send({ refreshToken, accessToken, user });
 		} else {
 			next(createHttpError(401, 'User not found'));
 		}
 	} catch (error) {
+		console.log(error);
 		next(error);
 	}
 };
