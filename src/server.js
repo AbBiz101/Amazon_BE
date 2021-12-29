@@ -1,15 +1,20 @@
 import cors from 'cors';
 import express from 'express';
+import passport from 'passport';
 import mongoose from 'mongoose';
 import Endpoints from 'express-list-endpoints';
 import { errorHandler } from './errorHandler.js';
 import usersRouter from './Services/User/index.js';
+import googleOAuth from './Authentication/oauth.js';
 import commentRouter from './Services/Comments/index.js';
 import productsRouter from './Services/Products/index.js';
 import cartsRouter from './Services/ShoppingCart/router.js';
 
+passport.use('google', googleOAuth);
+
 const app = express();
 app.use(express.json());
+app.use(passport.initialize());
 
 /* *************************** CORS middleware  ************************************* */
 const whiteList = [process.env.FE_LOCAL_URL, process.env.FE_PROD_URL];
