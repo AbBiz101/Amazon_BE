@@ -45,7 +45,6 @@ const getAllProducts = async (req, res, next) => {
 const createProducts = async (req, res, next) => {
 	try {
 		const newProducts = new products(req.body);
-		newProducts.productImg = req.file.path;
 		const { _id } = await newProducts.save();
 		res.status(201).send(_id);
 	} catch (error) {
