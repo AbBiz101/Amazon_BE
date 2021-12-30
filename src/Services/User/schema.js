@@ -5,7 +5,6 @@ const { Schema, model } = mongoose;
 
 export const UserSchema = new Schema(
 	{
-		// comments: [{ type: Schema.Types.ObjectId, ref: 'comments' }],
 		cart: [{ type: Schema.Types.ObjectId, ref: 'Product' }],
 		email: { type: String, required: true, unique: true },
 		firstName: { type: String, required: true },
@@ -40,9 +39,9 @@ UserSchema.methods.toJSON = function () {
 	const userObj = user.toObject();
 	delete userObj.refreshToken;
 	delete userObj.password;
-	delete userObj.comments;
-	delete userObj.cart;
 	delete userObj.__v;
+	delete userObj.updatedAt;
+	delete userObj.createdAt;
 	return userObj;
 };
 

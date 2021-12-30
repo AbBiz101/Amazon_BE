@@ -6,12 +6,11 @@ import products from './schema.js';
 import q2m from 'query-to-mongo';
 
 /* ******************** Product endpoints *************************** */
-let imageURL;
 const createImg = async (req, res, next) => {
 	try {
-		imageURL = req.file.path;
-		if (imageUrl) {
-			res.send(imageUrl);
+		const imageURL = req.file.path;
+		if (imageURL) {
+			res.send(imageURL);
 		} else {
 			console.log('image uploading failed');
 		}

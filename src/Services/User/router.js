@@ -15,7 +15,6 @@ const createUser = async (req, res, next) => {
 
 const login = async (req, res, next) => {
 	try {
-		console.log(req.body);
 		const { email, password } = req.body;
 		const user = await UserModel.checkCredentials(email, password);
 		if (user) {
@@ -27,7 +26,6 @@ const login = async (req, res, next) => {
 			next(createHttpError(401, 'User not found'));
 		}
 	} catch (error) {
-		console.log(error);
 		next(error);
 	}
 };
