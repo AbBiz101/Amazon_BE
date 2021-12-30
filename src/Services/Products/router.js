@@ -10,7 +10,7 @@ const createImg = async (req, res, next) => {
 	try {
 		const imageURL = req.file.path;
 		if (imageURL) {
-			res.send(imageURL);
+			res.send({data:imageURL,obj:1212});
 		} else {
 			console.log('image uploading failed');
 		}
