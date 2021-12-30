@@ -8,6 +8,7 @@ import {
 
 const {
 	login,
+	getPDF,
 	getUser,
 	editUser,
 	createUser,
@@ -15,7 +16,7 @@ const {
 	getUserAdmin,
 	googleRedirect,
 	editUserAdmin,
-	getRefreshToken,
+	getRefreshToken,sendUser,
 	getAllUserAdmin,
 	deleteUserAdmin,
 } = endpoints;
@@ -41,7 +42,7 @@ usersRouter.get(
 	passport.authenticate('google'),
 	googleRedirect,
 );
-
+usersRouter.get('/getUser', JWTAuthentication, sendUser);
 /**************************************** USER *************************************************/
 usersRouter
 	.route('/me')
@@ -58,5 +59,7 @@ usersRouter
 	.get(JWTAuthentication, adminAuthentication, getUserAdmin)
 	.put(JWTAuthentication, adminAuthentication, editUserAdmin)
 	.delete(JWTAuthentication, adminAuthentication, deleteUserAdmin);
+
+usersRouter.route('/basket/getPdf', getPDF);
 
 export default usersRouter;

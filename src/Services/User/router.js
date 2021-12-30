@@ -2,6 +2,7 @@ import UserModel from './schema.js';
 import createHttpError from 'http-errors';
 import q2m from 'query-to-mongo';
 import { JWTAuthenticatorForLogin } from '../../Authentication/authenticator.js';
+
 const createUser = async (req, res, next) => {
 	try {
 		const newUser = await new UserModel(req.body).save();
@@ -46,9 +47,8 @@ const getRefreshToken = async (req, res, next) => {
 /**************************************** OAUTH *************************************************/
 const googleRedirect = async (req, res, next) => {
 	try {
-		console.log('TOKENS: ', req.user.tokens);
 		res.redirect(
-			`${process.env.FE_PROD_URL}?accessToken=${req.user.tokens.accessToken}&refreshToken=${req.user.tokens.refreshToken}`,
+			`${process.env.FE_LOCAL_URL}?accessToken=${req.user.tokens.accessToken}&refreshToken=${req.user.tokens.refreshToken}`,
 		);
 	} catch (error) {
 		next(error);
@@ -131,10 +131,26 @@ const deleteUserAdmin = async (req, res, next) => {
 	}
 };
 
+const getPDF = (req, res, next) => {
+	try {
+		res.setMeader('Content-Disposition', 'attachment; filename=bill.pdf');
+	} catch (error) {}
+};
+
+const sendUser = async (req, res, next) => {
+	try {
+		res.send(req.user);
+	} catch (error) {
+		console.log(error);
+	}
+};
+
 const userEndpoints = {
 	login,
+	getPDF,
 	getUser,
 	editUser,
+	sendUser,
 	deleteUser,
 	createUser,
 	getUserAdmin,
