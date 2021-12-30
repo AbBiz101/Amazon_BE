@@ -12,3 +12,5 @@ Inaddition Cloudinary online demia storage was used.
 
 This project is linked with [Amazon Front End](https://github.com/AbBiz101/Amazon_FE). 
 
+## Note
+To run thsi server valid JWT secret keys, MonoB cluster ID, google client id and cloudinary id  are required 
