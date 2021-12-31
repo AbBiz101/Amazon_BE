@@ -139,6 +139,7 @@ const getPDF = (req, res, next) => {
 
 const sendUser = async (req, res, next) => {
 	try {
+		console.log(req.user)
 		res.send(req.user);
 	} catch (error) {
 		console.log(error);
