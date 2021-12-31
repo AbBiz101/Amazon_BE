@@ -17,7 +17,11 @@ app.use(express.json());
 app.use(passport.initialize());
 
 /* *************************** CORS middleware  ************************************* */
-const whiteList = [process.env.FE_LOCAL_URL, process.env.FE_PROD_URL];
+const whiteList = [
+	process.env.FE_LOCAL_URL,
+	process.env.API_URL,
+	process.env.FE_PROD_URL,
+];
 
 const corsOpts = {
 	origin: function (origin, next) {
