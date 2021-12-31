@@ -66,9 +66,11 @@ const getUser = async (req, res, next) => {
 
 const editUser = async (req, res, next) => {
 	try {
-		req.user = { ...req.user._doc, ...req.body };
-		console.log(111, req.user);
+		const id = req.id;
+		console.log(req.user);
+		const user = { ...req.user, ...req.body };
 		await user.save();
+		console.log(22, user);
 		res.send(user);
 	} catch (error) {
 		next(error);
@@ -139,7 +141,7 @@ const getPDF = (req, res, next) => {
 
 const sendUser = async (req, res, next) => {
 	try {
-		console.log(req.user)
+		console.log(req.user);
 		res.send(req.user);
 	} catch (error) {
 		console.log(error);
