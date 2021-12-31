@@ -1,11 +1,11 @@
-import UserModel from './schema.js';
+import User from './schema.js';
 import createHttpError from 'http-errors';
 import q2m from 'query-to-mongo';
 import { JWTAuthenticatorForLogin } from '../../Authentication/authenticator.js';
 
 const createUser = async (req, res, next) => {
 	try {
-		const newUser = await new UserModel(req.body).save();
+		const newUser = await new User(req.body).save();
 		delete newUser._doc.password;
 		delete newUser._doc.__v;
 		res.status(201).send(newUser);
@@ -17,7 +17,7 @@ const createUser = async (req, res, next) => {
 const login = async (req, res, next) => {
 	try {
 		const { email, password } = req.body;
-		const user = await UserModel.checkCredentials(email, password);
+		const user = await User.checkCredentials(email, password);
 		if (user) {
 			const { accessToken, refreshToken } = await JWTAuthenticatorForLogin(
 				user,
@@ -66,12 +66,15 @@ const getUser = async (req, res, next) => {
 
 const editUser = async (req, res, next) => {
 	try {
-		const id = req.id;
-		console.log(req.user);
-		const user = { ...req.user, ...req.body };
-		await user.save();
-		console.log(22, user);
-		res.send(user);
+		const id = req.user._id;
+		const user = await User.findByIdAndUpdate(id, req.body, {
+			new: true,
+		});
+		if (user) {
+			res.send(user);
+		} else {
+			res.send('error updting user');
+		}
 	} catch (error) {
 		next(error);
 	}
@@ -79,7 +82,8 @@ const editUser = async (req, res, next) => {
 
 const deleteUser = async (req, res, next) => {
 	try {
-		await req.user.deleteOne();
+		const id = req.user._id;
+		const user = await User.findByIdAndDelete();
 		res.status(204).send();
 	} catch (error) {
 		next(error);
@@ -91,7 +95,7 @@ const getAllUserAdmin = async (req, res, next) => {
 	try {
 		const mongoQuery = q2m(req.query);
 		const total = await products.countDocuments(mongoQuery.criteria);
-		const users = await UserModel.find(mongoQuery.criteria)
+		const users = await User.find(mongoQuery.criteria)
 			.limit(mongoQuery.options.limit)
 			.skip(mongoQuery.options.skip)
 			.sort(mongoQuery.options.sort);
@@ -108,7 +112,7 @@ const getAllUserAdmin = async (req, res, next) => {
 
 const getUserAdmin = async (req, res, next) => {
 	try {
-		const user = await UserModel.findById(req.params.id);
+		const user = await User.findById(req.params.id);
 		delete users._doc.password;
 		delete users._doc.__v;
 		res.send(user);

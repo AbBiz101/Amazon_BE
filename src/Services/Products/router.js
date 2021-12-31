@@ -9,9 +9,8 @@ import q2m from 'query-to-mongo';
 const createImg = async (req, res, next) => {
 	try {
 		const imageURL = req.file.path;
-		if (req.file.path) {
-			console.log(req.file.path);
-			res.send(req.file.path);
+		if (imageURL) {
+			res.send({ data: imageURL });
 		} else {
 			console.log('image uploading failed');
 		}
