@@ -3,11 +3,12 @@ import q2m from 'query-to-mongo';
 import Comments from './schema.js';
 import products from '../Products/schema.js';
 
-
 const getAllCommentsOfAProduct = async (req, res, next) => {
 	try {
 		const pID = req.params.productId;
-		const product = await products.findById(pID);
+		const product = await products
+			.findById(pID)
+			.populate({ path: 'productComment', select: 'user comment' });
 		res.send(product.productComment);
 	} catch (error) {
 		next(error);

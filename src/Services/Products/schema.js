@@ -12,6 +12,7 @@ const ProductSchema = new mongoose.Schema(
 			{
 				type: Schema.Types.ObjectId,
 				ref: 'Comments',
+				
 			},
 		],
 	},

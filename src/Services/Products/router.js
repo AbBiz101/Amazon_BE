@@ -27,9 +27,8 @@ const getAllProducts = async (req, res, next) => {
 			.find(mongoQuery.criteria)
 			.limit(mongoQuery.options.limit)
 			.skip(mongoQuery.options.skip)
-			.sort(mongoQuery.options.sort);
-		console.log(21211);
-
+			.sort(mongoQuery.options.sort)
+			.populate({ path: 'productComment', select: 'user comment' });
 		res.send({
 			links: mongoQuery.links('/product', total),
 			pageTotal: Math.ceil(total / mongoQuery.options.limit),
@@ -57,8 +56,9 @@ const createProducts = async (req, res, next) => {
 const getProductById = async (req, res, next) => {
 	try {
 		const id = req.params.productId;
-		const product = await products.findById(id);
-		console.log(product);
+		const product = await products
+			.findById(id)
+			.populate({ path: 'productComment', select: 'user comment' });
 		if (product) {
 			res.status(200).send(product);
 		} else {
