@@ -1,6 +1,7 @@
 import User from './schema.js';
-import createHttpError from 'http-errors';
 import q2m from 'query-to-mongo';
+import { sendEmail } from './tools.js';
+import createHttpError from 'http-errors';
 import { JWTAuthenticatorForLogin } from '../../Authentication/authenticator.js';
 
 const createUser = async (req, res, next) => {
@@ -143,6 +144,20 @@ const getPDF = (req, res, next) => {
 	} catch (error) {}
 };
 
+const purchasedEmail = async (req, res, next) => {
+	try {
+		const { email } = req.user;
+		console.log(req.user);
+		const body = req.body;
+		const data = body.cart[0].productDescription;
+		console.log(email, data);
+		await sendEmail(email, data);
+		res.send('ok');
+	} catch (error) {
+		console.log(error);
+	}
+};
+
 const sendUser = async (req, res, next) => {
 	try {
 		console.log(req.user);
@@ -163,11 +178,10 @@ const userEndpoints = {
 	getUserAdmin,
 	editUserAdmin,
 	googleRedirect,
+	purchasedEmail,
 	getRefreshToken,
 	getAllUserAdmin,
 	deleteUserAdmin,
 };
-
-
 
 export default userEndpoints;

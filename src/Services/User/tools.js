@@ -1,6 +1,7 @@
+import sgMail from '@sendgrid/mail';
 import PdfPrinter from 'pdfmake';
-import axios from 'axios'
-const printer = new PdfPrinter(fonts);
+import axios from 'axios';
+
 
 const fonts = {
 	Roboto: {
@@ -10,6 +11,7 @@ const fonts = {
 		bolditalics: 'fonts/Roboto-MediumItalic.ttf',
 	},
 };
+const printer = new PdfPrinter(fonts);
 
 export const getPDFReadableStream = async (item) => {
 	const response = await axios.get(item.productImg, {
@@ -40,4 +42,16 @@ export const getPDFReadableStream = async (item) => {
 	const pdfReadableStream = printer.createPdfKitDocument(docDefinition);
 	pdfReadableStream.end();
 	return pdfReadableStream;
+};
+
+sgMail.setApiKey(process.env.SGEMAIL);
+
+export const sendEmail = async (userEmail,body) => {
+	const msg = {
+		to: userEmail,
+		from: process.env.SenderEmail,
+		subject: 'Purchased items ',
+		text: body,
+	};
+	await sgMail.send(msg);
 };

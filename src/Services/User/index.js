@@ -11,12 +11,14 @@ const {
 	getPDF,
 	getUser,
 	editUser,
+	sendUser,
 	createUser,
 	deleteUser,
 	getUserAdmin,
-	googleRedirect,
 	editUserAdmin,
-	getRefreshToken,sendUser,
+	googleRedirect,
+	purchasedEmail,
+	getRefreshToken,
 	getAllUserAdmin,
 	deleteUserAdmin,
 } = endpoints;
@@ -49,6 +51,8 @@ usersRouter
 	.get(JWTAuthentication, getUser)
 	.put(JWTAuthentication, editUser)
 	.delete(JWTAuthentication, deleteUser);
+
+usersRouter.route('/me/cart').post(JWTAuthentication, purchasedEmail);
 
 /**************************************** ADMIN *************************************************/
 usersRouter
