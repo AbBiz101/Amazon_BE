@@ -1,8 +1,10 @@
+import fs from 'fs-extra';
 import User from './schema.js';
 import q2m from 'query-to-mongo';
 import { sendEmail } from './tools.js';
 import createHttpError from 'http-errors';
 import { JWTAuthenticatorForLogin } from '../../Authentication/authenticator.js';
+import { getPDFReadableStream } from './tools.js';
 
 const createUser = async (req, res, next) => {
 	try {
@@ -141,22 +143,31 @@ const deleteUserAdmin = async (req, res, next) => {
 const getPDF = (req, res, next) => {
 	try {
 		res.setMeader('Content-Disposition', 'attachment; filename=bill.pdf');
+		source = req.body;
+		const destination = res;
 	} catch (error) {}
 };
 
 const purchasedEmail = async (req, res, next) => {
 	try {
 		const { email } = req.user;
-		console.log(req.user);
 		const body = req.body;
-		const data = body.cart[0].productDescription;
-		console.log(email, data);
-		await sendEmail(email, data);
-		res.send('ok');
+		const data = body.cart[0].productName;
+		const data1 = body.cart[0].productPrice;
+		const data2 = body.cart[0].productImg;
+
+		const path = await getPDFReadableStream(createdProduct);
+		const attachment = fs.readFileSync(path).toString('base64');
+		await sendEmail(email, attachment);
+		res.status(201).send(createdProduct);
 	} catch (error) {
 		console.log(error);
 	}
 };
+
+
+
+
 
 const sendUser = async (req, res, next) => {
 	try {
