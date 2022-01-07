@@ -51,7 +51,7 @@ const getRefreshToken = async (req, res, next) => {
 const googleRedirect = async (req, res, next) => {
 	try {
 		res.redirect(
-			`${process.env.FE_LOCAL_URL}?accessToken=${req.user.tokens.accessToken}&refreshToken=${req.user.tokens.refreshToken}`,
+			`${process.env.FE_PROD_URL}?accessToken=${req.user.tokens.accessToken}&refreshToken=${req.user.tokens.refreshToken}`,
 		);
 	} catch (error) {
 		next(error);
