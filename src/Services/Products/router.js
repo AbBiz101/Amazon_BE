@@ -15,7 +15,7 @@ const createImg = async (req, res, next) => {
 			console.log('image uploading failed');
 		}
 	} catch (error) {
-		console.log(error);
+		next(error);
 	}
 };
 
@@ -48,7 +48,6 @@ const createProducts = async (req, res, next) => {
 		const { _id } = await newProducts.save();
 		res.status(201).send(_id);
 	} catch (error) {
-		console.log(error);
 		res.status(500).send();
 		next(error);
 	}

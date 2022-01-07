@@ -13,7 +13,7 @@ const createUser = async (req, res, next) => {
 		delete newUser._doc.__v;
 		res.status(201).send(newUser);
 	} catch (error) {
-		console.log(error);
+		next(error);
 	}
 };
 
@@ -115,7 +115,7 @@ const getAllUserAdmin = async (req, res, next) => {
 
 const getUserAdmin = async (req, res, next) => {
 	try {
-		const user = await User.findById(req.params.id);
+		const users = await User.findById(req.params.id);
 		delete users._doc.password;
 		delete users._doc.__v;
 		res.send(user);
@@ -145,7 +145,9 @@ const getPDF = (req, res, next) => {
 		res.setMeader('Content-Disposition', 'attachment; filename=bill.pdf');
 		source = req.body;
 		const destination = res;
-	} catch (error) {}
+	} catch (error) {
+		next(error);
+	}
 };
 
 const purchasedEmail = async (req, res, next) => {
@@ -165,16 +167,11 @@ const purchasedEmail = async (req, res, next) => {
 	}
 };
 
-
-
-
-
 const sendUser = async (req, res, next) => {
 	try {
-		console.log(req.user);
 		res.send(req.user);
 	} catch (error) {
-		console.log(error);
+		next(error);
 	}
 };
 

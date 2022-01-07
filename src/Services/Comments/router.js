@@ -17,7 +17,6 @@ const getAllCommentsOfAProduct = async (req, res, next) => {
 
 const createComment = async (req, res, next) => {
 	try {
-		console.log();
 		const pID = req.params.productId;
 		const newComment = new Comments(req.body);
 		const product = await products.findById(pID);
@@ -33,7 +32,6 @@ const createComment = async (req, res, next) => {
 			res.status(400).send('no product with this id');
 		}
 	} catch (error) {
-		console.log(error);
 		next(error);
 	}
 };
@@ -100,7 +98,6 @@ const deleteComment = async (req, res, next) => {
 			res.status(400).send('no product with this id');
 		}
 	} catch (error) {
-		console.log(error);
 		next(error);
 	}
 };
