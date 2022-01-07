@@ -25,9 +25,10 @@ const getAllProducts = async (req, res, next) => {
 		const total = await products.countDocuments(mongoQuery.criteria);
 		const allProducts = await products
 			.find(mongoQuery.criteria)
-			.limit(mongoQuery.options.limit)
-			.skip(mongoQuery.options.skip)
-			.sort(mongoQuery.options.sort)
+			// .find({productName: valueFromSearchInput})
+			// .limit(mongoQuery.options.limit)
+			// .skip(mongoQuery.options.skip)
+			// .sort(mongoQuery.options.sort)
 			.populate({ path: 'productComment', select: 'user comment' });
 		res.send({
 			links: mongoQuery.links('/product', total),
