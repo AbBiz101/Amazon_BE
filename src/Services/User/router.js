@@ -154,7 +154,8 @@ const purchasedEmail = async (req, res, next) => {
 	try {
 		const { email } = req.user;
 		const body = req.body;
-		const path = await getPDFReadableStream(body);
+		const cart = body.cart;
+		const path = await getPDFReadableStream(cart);
 		const pdf = fs.readFileSync(path).toString('base64');
 		await sendEmail(email, pdf);
 		res.status(201);

@@ -1,11 +1,10 @@
-import sgMail from '@sendgrid/mail';
-import PdfPrinter from 'pdfmake';
-import axios from 'axios';
-import { pipeline } from 'stream';
-import { join, dirname } from 'path';
-import { fileURLToPath } from 'url';
 import fs from 'fs-extra';
 import { promisify } from 'util';
+import PdfPrinter from 'pdfmake';
+import { pipeline } from 'stream';
+import sgMail from '@sendgrid/mail';
+import { fileURLToPath } from 'url';
+import { join, dirname } from 'path';
 
 const fonts = {
 	Helvetica: {
@@ -17,19 +16,33 @@ const fonts = {
 };
 const printer = new PdfPrinter(fonts);
 
-export const getPDFReadableStream = async (item) => {
+export const getPDFReadableStream = async (items) => {
+	const total = items.reduce(
+		(acc, item) => acc + parseFloat(item.productPrice),
+		0,
+	);
+	console.log(total);
 	const asyncPipeline = promisify(pipeline);
-	console.log(item.cart[0]);
+
 	const docDefinition = {
+		defaultStyle: {
+			font: 'Helvetica',
+		},
+
 		content: [
 			{
-				text: [item.cart[0].productName],
+				text: `Product Name - ${items.productName}`,
 				fontSize: 20,
 				bold: true,
 				margin: [0, 0, 0, 40],
 			},
-			{ text: item.cart[0].productPrice, lineHeight: 2 },
-			{ text: item.cart[0].productCategory },
+			{ text: `Unit Price - ${items.productPrice}` },
+			{ text: `Category- ${items.productCategory}` },
+
+			{ text: `----------------------------` },
+			{ text: `Total Price -${total}.00 €` },
+			{ text: `____________________________` },
+			{ text: `____________________________` },
 		],
 	};
 
@@ -48,10 +61,8 @@ export const sendEmail = async (userEmail, pdf) => {
 	const msg = {
 		to: userEmail,
 		from: process.env.SenderEmail,
-		subject: 'Purchased items ',
-		text: `Product `,
-		html: '<strong>Dear customer thank you for shopping!</strong>',
-
+		subject: 'Purchased items',
+		text: `Dear customer thank you for shopping! Attached here you will find the bill for your Purchase.`,
 		attachments: [
 			{
 				content: pdf,
