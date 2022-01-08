@@ -30,19 +30,14 @@ export const getPDFReadableStream = async (items) => {
 		},
 
 		content: [
-			{
-				text: `Product Name - ${items.productName}`,
-				fontSize: 20,
-				bold: true,
-				margin: [0, 0, 0, 40],
-			},
-			{ text: `Unit Price - ${items.productPrice}` },
-			{ text: `Category- ${items.productCategory}` },
-
-			{ text: `----------------------------` },
+			items.map((item) => ({
+				text: `Product Name - ${item.productName}		 
+					   	Price - ${item.productPrice}.00 €`,
+			})),
+			{ text: `---------------------------------------` },
 			{ text: `Total Price -${total}.00 €` },
-			{ text: `____________________________` },
-			{ text: `____________________________` },
+			{ text: `___________________` },
+			{ text: `___________________` },
 		],
 	};
 
