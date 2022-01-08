@@ -21,14 +21,11 @@ export const getPDFReadableStream = async (items) => {
 		(acc, item) => acc + parseFloat(item.productPrice),
 		0,
 	);
-	console.log(total);
 	const asyncPipeline = promisify(pipeline);
-
 	const docDefinition = {
 		defaultStyle: {
 			font: 'Helvetica',
 		},
-
 		content: [
 			items.map((item) => ({
 				text: `Product Name - ${item.productName}		 
