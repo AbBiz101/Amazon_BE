@@ -1,45 +1,43 @@
 import sgMail from '@sendgrid/mail';
 import PdfPrinter from 'pdfmake';
 import axios from 'axios';
+import { pipeline } from 'stream';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
+import fs from 'fs-extra';
+import { promisify } from 'util';
 
 const fonts = {
-	Roboto: {
-		normal: 'fonts/Roboto-Regular.ttf',
-		bold: 'fonts/Roboto-Medium.ttf',
-		italics: 'fonts/Roboto-Italic.ttf',
-		bolditalics: 'fonts/Roboto-MediumItalic.ttf',
+	Helvetica: {
+		normal: 'Helvetica',
+		bold: 'Helvetica-Bold',
+		italics: 'Helvetica-Oblique',
+		bolditalics: 'Helvetica-BoldOblique',
 	},
 };
 const printer = new PdfPrinter(fonts);
 
-export const getPDFReadableStream = async (items) => {
-	// const response = await axios.get(items.productImg, {
-	// 	responseType: 'arraybuffer',
-	// });
-	// const itemImageURLParts = profile.item.split('/');
-	// const fileName = itemImageURLParts[itemImageURLParts.length - 1];
-	// const [id, extension] = fileName.split('.');
-	// const base64 = response.data.toString('base64');
-	// const base64Image = `data:image/${extension};base64,${base64}`;
-	// const imagePart = { image: base64Image, width: 500, margin: [0, 0, 0, 40] };
-
+export const getPDFReadableStream = async (item) => {
+	const asyncPipeline = promisify(pipeline);
+	console.log(item.cart[0]);
 	const docDefinition = {
-		content: items.map((item) => [
+		content: [
 			{
-				text: [item.productName],
+				text: [item.cart[0].productName],
 				fontSize: 20,
 				bold: true,
 				margin: [0, 0, 0, 40],
 			},
-			{ text: item.productPrice, lineHeight: 2 },
-			{ text: item.productCategory },
-		]),
+			{ text: item.cart[0].productPrice, lineHeight: 2 },
+			{ text: item.cart[0].productCategory },
+		],
 	};
 
-	const pdfStream = printer.createPdfKitDocument(docDefinition, option);
-	pipeline(pdfStream, fs.createEmailStream('bill.pdf'));
+	const pdfStream = printer.createPdfKitDocument(docDefinition);
+	const path = join(dirname(fileURLToPath(import.meta.url)), `file.pdf`);
 	pdfStream.end();
-	return pdfStream;
+	await asyncPipeline(pdfStream, fs.createWriteStream(path));
+	return path;
 };
 
 /* ----------------------------------- EMAIL ----------------------------------------- */
@@ -51,8 +49,9 @@ export const sendEmail = async (userEmail, pdf) => {
 		to: userEmail,
 		from: process.env.SenderEmail,
 		subject: 'Purchased items ',
-		// text: `Product Name-${data}\nProduct Price- ${data1}\nproduct Image-${data2}`,
+		text: `Product `,
 		html: '<strong>Dear customer thank you for shopping!</strong>',
+
 		attachments: [
 			{
 				content: pdf,

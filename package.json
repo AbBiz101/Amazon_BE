@@ -21,6 +21,7 @@
 	},
 	"homepage": "https://github.com/AbBiz101/Amazon_BE#readme",
 	"dependencies": {
+		"@fontsource/roboto": "^4.5.1",
 		"@sendgrid/mail": "^7.6.0",
 		"atob": "^2.1.2",
 		"axios": "^0.24.0",

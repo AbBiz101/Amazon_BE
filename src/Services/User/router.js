@@ -154,14 +154,10 @@ const purchasedEmail = async (req, res, next) => {
 	try {
 		const { email } = req.user;
 		const body = req.body;
-		const data = body.cart[0].productName;
-		const data1 = body.cart[0].productPrice;
-		const data2 = body.cart[0].productImg;
-
-		const path = await getPDFReadableStream(createdProduct);
-		const attachment = fs.readFileSync(path).toString('base64');
-		await sendEmail(email, attachment);
-		res.status(201).send(createdProduct);
+		const path = await getPDFReadableStream(body);
+		const pdf = fs.readFileSync(path).toString('base64');
+		await sendEmail(email, pdf);
+		res.status(201);
 	} catch (error) {
 		console.log(error);
 	}
